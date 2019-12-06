@@ -14,7 +14,7 @@ TOKENS = [MOVE_RIGHT, MOVE_LEFT, INCREMENT, DECREMENT, \
           OUTPUT, REPLACE, JUMP_IF_ZERO, JUMP_IF_NOT_ZERO]
 
 class Brainfuck:
-    def __init__(self, program):
+    def __init__(self, program=""):
         self.index = 0
         self.tokens = Brainfuck.sanitize(program)
         self.brackets = Brainfuck.brackets(self.tokens)
@@ -43,6 +43,13 @@ class Brainfuck:
                 raise TokenError(token, 'Unknown token')
 
             self.index += 1
+        
+    def interpret(self, instructions):
+        self.index = 0
+        self.tokens = self.tokens = Brainfuck.sanitize(instructions)
+        self.brackets = Brainfuck.brackets(self.tokens)
+
+        self.run()
 
     @staticmethod
     def brackets(tokens) -> dict:

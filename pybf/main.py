@@ -7,10 +7,11 @@ LOG_TO_STDOUT = 1
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    parser.add_argument('file', nargs='?')
     parser.add_argument('--log', nargs='?', default=NO_LOGGING, const=LOG_TO_STDOUT)
 
     args = parser.parse_args()
-    
+
     if args.log:
         if args.log == LOG_TO_STDOUT:
             logging.basicConfig(
@@ -26,10 +27,17 @@ if __name__ == "__main__":
             datefmt='%Y-%m-%d %H:%M:%S',
             level=logging.INFO)
 
+    if not args.file:
+        brainfuck = Brainfuck()
 
-    brainfuck = Brainfuck("++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>123+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.")
+        while True:
+            instructions = input('> ')
+            brainfuck.interpret(instructions)
+            print(brainfuck.memory)
 
-    try:
-        brainfuck.run()
-    except KeyboardInterrupt:
-        pass
+    if args.file:
+        brainfuck = Brainfuck("++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>123+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.")
+        try:
+            brainfuck.run()
+        except KeyboardInterrupt:
+            pass
